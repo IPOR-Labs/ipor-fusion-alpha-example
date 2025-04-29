@@ -1,0 +1,102 @@
+name: Python build
+
+on:
+  workflow_call:
+
+    secrets:
+      ARBITRUM_PROVIDER_URL:
+        required: true
+      BASE_PROVIDER_URL:
+        required: true
+      ETHEREUM_PROVIDER_URL:
+        required: true
+
+    inputs:
+      python-version:
+        description: "Python version"
+        type: string
+        default: 3.12
+        required: false
+      poetry-version:
+        description: "Poetry version"
+        type: string
+        default: 1.8
+        required: false
+      test-options:
+        description: "Extra pytest options"
+        type: string
+        default: "-v -s"
+        required: false
+      format-code-enabled:
+        description: "Enable code formatting"
+        type: boolean
+        default: true
+        required: false
+      static-code-analysis-enabled:
+        description: "Enable static code analysis"
+        type: boolean
+        default: true
+        required: false
+      build-enabled:
+        description: "Enable package build"
+        type: boolean
+        default: true
+        required: false
+      test-enabled:
+        description: "Enable pytest tests"
+        type: boolean
+        default: true
+        required: false
+
+env:
+  POETRY_VIRTUALENVS_PATH: "~/.cache/pypoetry/virtualenvs"
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        # from tag: v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        # from tag: v5.3.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Set up Poetry
+        # from tag: v3.0.1
+        uses: abatilo/actions-poetry@e78f54a89cb052fff327414dd9ff010b5d2b4dbd
+        with:
+          poetry-version: ${{ inputs.poetry-version }}
+
+      - name: Cache
+        # from tag: v4.1.2
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57
+        with:
+          path: ${{ env.POETRY_VIRTUALENVS_PATH }}
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install
+        run: poetry install
+        id: install
+
+      - name: Build
+        if: inputs.build-enabled
+        run: poetry build
+        id: build
+
+      - name: Tests
+        if: inputs.test-enabled
+        run: |
+          poetry run pytest ${{ inputs.test-options }}
+        env:
+          ETHEREUM_PROVIDER_URL: ${{ secrets.ETHEREUM_PROVIDER_URL }}
+          ARBITRUM_PROVIDER_URL: ${{ secrets.ARBITRUM_PROVIDER_URL }}
+          BASE_PROVIDER_URL: ${{ secrets.BASE_PROVIDER_URL }}
+        id: tests
+

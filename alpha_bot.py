@@ -10,7 +10,7 @@ class AlphaBot:
     def __init__(self, provider_url: str, private_key: str, plasma_vault_address: str):
         """
         Initialize the Fusion Alpha Bot with necessary credentials and settings.
-        
+
         Args:
             provider_url: The blockchain provider URL
             private_key: The private key for transaction signing
@@ -30,16 +30,16 @@ class AlphaBot:
     def do_fusion(self):
         """
         Execute the Fusion strategy - supply wstETH to Aave v3 protocol in E-Mode.
-        
+
         This method performs the following operations:
         1. Access the plasma vault instance
         2. Get a reference to the wstETH token
         3. Create a supply transaction to deposit all wstETH into Aave v3 with E-Mode enabled
         4. Execute the transaction through the vault
-        
+
         Returns:
             dict or None: Transaction receipt if successful, None if the balance is zero
-        
+
         Raises:
             Exception: Any errors during the process are logged and re-raised
         """
@@ -59,16 +59,17 @@ class AlphaBot:
             self.logger.info(f"Current wstETH balance to supply: {balance}")
 
             if balance == 0:
-                self.logger.warning("wstETH balance is zero, cannot proceed with fusion")
+                self.logger.warning(
+                    "wstETH balance is zero, cannot proceed with fusion"
+                )
                 return None
 
             # Create a supply transaction to deposit all available wstETH into Aave v3
             self.logger.debug(
-                f"Creating supply transaction asset_address={wsteth.address()} amount={balance} e_mode={1}")
+                f"Creating supply transaction asset_address={wsteth.address()} amount={balance} e_mode={1}"
+            )
             supply = self.plasma_system.aave_v3().supply(
-                asset_address=wsteth.address(),
-                amount=balance,
-                e_mode=1
+                asset_address=wsteth.address(), amount=balance, e_mode=1
             )
 
             # Execute the supply transaction through the vault
@@ -78,8 +79,10 @@ class AlphaBot:
             self.logger.info(f"Transaction executed successfully hash: 0x{tx_hash}")
 
             # Log more transaction details if debug is enabled
-            self.logger.debug(f"Transaction details: gas used={tx_receipt.gasUsed}, "
-                              f"block number={tx_receipt.blockNumber}")
+            self.logger.debug(
+                f"Transaction details: gas used={tx_receipt.gasUsed}, "
+                f"block number={tx_receipt.blockNumber}"
+            )
 
             return tx_receipt
 
