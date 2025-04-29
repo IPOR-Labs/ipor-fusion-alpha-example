@@ -43,6 +43,26 @@ The bot will:
 2. Initialize the IPOR Plasma Vault system
 3. Execute the trading strategy at the configured interval (default: 60 seconds)
 
+## Docker Setup
+
+The project includes Docker configuration for easy deployment:
+
+1. **Docker Files**:
+   - `Dockerfile` - Configures the Python environment for the alpha bot
+   - `Dockerfile.anvil` - Sets up the Foundry environment with anvil for local blockchain testing
+   - `docker-compose.yml` - Orchestrates both services with proper networking
+
+2. **Running with Docker**:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   This will start:
+   - An anvil instance for local blockchain simulation
+   - The alpha bot container connected to the anvil service
+
+
 ### Customizing the Bot
 
 To customize the bot's behavior:
