@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ipor-fusion-alpha-example"
+version = "0.1.0"
+description = ""
+authors = ["adam ipor <adam@ipor.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "1.0.1"
+ipor-fusion = "0.13.0"
+schedule = "1.2.2"
+testcontainers = "4.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
