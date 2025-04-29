@@ -1,0 +1,11 @@
+# Use Python 3.11 as the base image
+FROM ghcr.io/ipor-labs/foundry:nightly-aa69ed1e46dd61fbf9d73399396a4db4dd527431
+
+# Set working directory
+WORKDIR /app
+
+# Copy poetry configuration files
+COPY docker-entrypoint.sh /app/
+
+# Run the bot
+CMD ["./docker-entrypoint.sh"]

@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  alpha-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alpha-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PROVIDER_URL=http://anvil:8545/
+    command:
+
+  anvil:
+    container_name: anvil
+    build:
+      context: .
+      dockerfile: Dockerfile.anvil
+    restart: unless-stopped
+    env_file:
+      - .env
