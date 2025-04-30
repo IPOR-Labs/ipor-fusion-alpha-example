@@ -11,6 +11,7 @@ python-dotenv = "1.1.0"
 ipor-fusion = "0.13.0"
 schedule = "1.2.2"
 testcontainers = "4.10.0"
+pytest = "8.3.5"
 
 [build-system]
 requires = ["poetry-core"]
