@@ -85,11 +85,6 @@ jobs:
         run: poetry install
         id: install
 
-      - name: Build
-        if: inputs.build-enabled
-        run: poetry build
-        id: build
-
       - name: Tests
         if: inputs.test-enabled
         run: |
