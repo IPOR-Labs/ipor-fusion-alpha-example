@@ -13,6 +13,20 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
 - Python 3.11 or newer
 - Poetry (Python dependency management)
 
+## Environment Setup
+
+1. **Configure Environment Variables**:
+
+   Create a `.env` file in the root directory of the project by copying the provided example:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Then, edit the `.env` file and replace the placeholder values with your actual credentials:
+   - `PROVIDER_URL`: Your Base blockchain provider URL
+   - `PRIVATE_KEY`: Your wallet private key
+   - `PLASMA_VAULT_ADDRESS`: The address of the IPOR Plasma Vault
 
 ## Development Setup
 
@@ -76,16 +90,6 @@ To customize the bot's behavior:
 - `main.py` - Entry point that sets up environment and initializes components
 - `alpha_bot.py` - Core bot implementation with trading strategies
 - `scheduler.py` - Handles periodic execution of the bot's operations
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License
 
