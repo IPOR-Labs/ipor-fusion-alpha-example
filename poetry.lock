@@ -1001,13 +1001,13 @@ files = [
 
 [[package]]
 name = "ipor-fusion"
-version = "0.13.0"
+version = "0.14.0"
 description = "The IPOR Fusion SDK for Python"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "ipor_fusion-0.13.0-py3-none-any.whl", hash = "sha256:b7ca726b928868e3ac3c546b3ca49c31fe24ddfbc1df5850a3a3d0a9ec06f8cf"},
-    {file = "ipor_fusion-0.13.0.tar.gz", hash = "sha256:a3a5f2fbf1656bc7b2d3d9c51afcdb6d908f81a0eeeae351f223eeac25963a80"},
+    {file = "ipor_fusion-0.14.0-py3-none-any.whl", hash = "sha256:bfeac61d96e06d1e5a2702b3684d32c6dc0e521c527ab84a94c02395a1c6be1b"},
+    {file = "ipor_fusion-0.14.0.tar.gz", hash = "sha256:09c5937eaf2d9da88d30540dcdb9a33a551f47c558361e75517df1437e064fb9"},
 ]
 
 [package.dependencies]
@@ -2114,4 +2114,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "243c3ad4b6c68e950de0ac9883c392f4d1d58f1379f2d82df9d7cd1084836923"
+content-hash = "b26100210ef938652e5d5413bf997aec68b7c978b76580abe7639c4a44a2ab44"
