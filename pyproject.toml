@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 python-dotenv = "1.1.0"
-ipor-fusion = "0.14.0"
+ipor-fusion = "0.16.0"
 schedule = "1.2.2"
 testcontainers = "4.10.0"
 pytest = "8.3.5"
