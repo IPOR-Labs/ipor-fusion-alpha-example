@@ -3,7 +3,7 @@ import logging
 
 class LoggingConfig:
 
-    # Get individual logger for a specific component
+    @staticmethod
     def get_logger(component_name: str):
         logger = logging.getLogger(f"Fusion Alpha - {component_name}")
         logger.setLevel(logging.DEBUG)  # Changed to DEBUG for more detailed logging

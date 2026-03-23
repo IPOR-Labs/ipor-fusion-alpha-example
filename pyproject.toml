@@ -1,15 +1,17 @@
 [tool.poetry]
 name = "ipor-fusion-alpha-example"
 version = "0.1.0"
-description = ""
+description = "Example bot for IPOR Fusion Alpha using the IPOR Fusion SDK"
 authors = ["adam ipor <adam@ipor.io>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 python-dotenv = "1.1.0"
-ipor-fusion = "0.20.0"
+ipor-fusion = "2.0.0"
 schedule = "1.2.2"
+
+[tool.poetry.group.dev.dependencies]
 testcontainers = "4.10.0"
 pytest = "8.3.5"
 
