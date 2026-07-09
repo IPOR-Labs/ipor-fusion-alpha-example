@@ -1,6 +1,6 @@
 #!/bin/sh
 
-anvil --steps-tracing --auto-impersonate --host 0.0.0.0 --fork-url "${PROVIDER_URL}" --fork-block-number 29007455 &
+anvil --steps-tracing --auto-impersonate --host 0.0.0.0 --fork-url "${PROVIDER_URL}" --fork-block-number 48394000 &
 ANVIL_PID=$!
 
 until cast block-number --rpc-url http://localhost:8545 >/dev/null 2>&1; do sleep 1; done
