@@ -9,7 +9,7 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
 
 ## Prerequisites
 
-- Docker or Podman
+- Docker or Podman (only for the compose sandbox)
 - Python 3.11 or newer
 - [uv](https://docs.astral.sh/uv/) (Python dependency management)
 
@@ -41,6 +41,9 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
     ```bash
     uv run pytest
     ```
+
+    The test dry-runs the strategy with `eth_simulateV1` against a pinned Base block, so it needs
+    `PROVIDER_URL` to point at an archive RPC that supports it (Alchemy does). No anvil or Docker required.
 
 ## Usage
 
