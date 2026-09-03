@@ -1,4 +1,4 @@
-from ipor_fusion import Web3Context, PlasmaVault, ERC20, AaveV3SupplyFuse
+from ipor_fusion import Web3Context, PlasmaVault, ERC20, AaveV3SupplyFuse, FuseAction
 from web3 import Web3
 
 from logging_config import LoggingConfig
@@ -24,28 +24,33 @@ class AlphaBot:
         self.wsteth = ERC20(self.ctx, self.WSTETH_ADDRESS)
         self.aave_v3_supply = AaveV3SupplyFuse(self.BASE_AAVE_V3_SUPPLY_FUSE)
 
+    def build_actions(self) -> list[FuseAction]:
+        """Strategy step: the fuse actions to execute now, empty when there is nothing to do."""
+        balance = self.wsteth.balance_of(self.plasma_vault_address).call()
+        self.logger.info(f"Current wstETH balance to supply: {balance}")
+
+        if balance == 0:
+            self.logger.warning("wstETH balance is zero, nothing to supply")
+            return []
+
+        self.logger.debug(
+            f"Creating supply action asset={self.WSTETH_ADDRESS} amount={balance} e_mode=1"
+        )
+        supply = self.aave_v3_supply.supply(
+            asset=self.WSTETH_ADDRESS, amount=balance, e_mode=1
+        )
+        return [supply]
+
     def do_fusion(self):
         self.logger.info("Starting fusion operation")
 
         try:
-            balance = self.wsteth.balance_of(self.plasma_vault_address).call()
-            self.logger.info(f"Current wstETH balance to supply: {balance}")
-
-            if balance == 0:
-                self.logger.warning(
-                    "wstETH balance is zero, cannot proceed with fusion"
-                )
+            actions = self.build_actions()
+            if not actions:
                 return None
 
-            self.logger.debug(
-                f"Creating supply transaction asset={self.WSTETH_ADDRESS} amount={balance} e_mode=1"
-            )
-            supply = self.aave_v3_supply.supply(
-                asset=self.WSTETH_ADDRESS, amount=balance, e_mode=1
-            )
-
             self.logger.info("Executing transaction...")
-            tx_receipt = self.vault.execute([supply]).send()
+            tx_receipt = self.vault.execute(actions).send()
             tx_hash = tx_receipt.transactionHash.hex()
             self.logger.info(f"Transaction executed successfully hash: 0x{tx_hash}")
 
