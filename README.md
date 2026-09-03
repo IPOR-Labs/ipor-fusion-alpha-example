@@ -9,9 +9,9 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
 
 ## Prerequisites
 
-- Docker
+- Docker or Podman
 - Python 3.11 or newer
-- Poetry (Python dependency management)
+- [uv](https://docs.astral.sh/uv/) (Python dependency management)
 
 ## Environment Setup
 
@@ -33,13 +33,13 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
 1.  **Install Dependencies**:
 
     ```bash
-    poetry install
+    uv sync
     ```
 
 2.  **Run Tests**:
 
     ```bash
-    poetry run pytest
+    uv run pytest
     ```
 
 ## Usage
@@ -49,7 +49,7 @@ It demonstrates how to connect to the platform, retrieve data, and execute trade
 Execute the bot with the following command:
 
 ```bash
-poetry run python main.py
+uv run python main.py
 ```
 
 The bot will:

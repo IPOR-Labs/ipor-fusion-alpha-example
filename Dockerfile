@@ -1,17 +1,15 @@
-# Use Python 3.11 as the base image
 FROM python:3.11-slim
 
-# Set working directory
+COPY --from=ghcr.io/astral-sh/uv:0.11.21 /uv /uvx /bin/
+
 WORKDIR /app
 
-# Copy poetry configuration files
-COPY pyproject.toml poetry.lock* /app/
+ENV UV_LINK_MODE=copy
 
-# Install poetry and dependencies
-RUN pip install poetry && poetry install --no-root
+# Install dependencies first so this layer is cached across code changes
+COPY pyproject.toml uv.lock /app/
+RUN uv sync --locked --no-dev
 
-# Copy the application code
 COPY . /app/
 
-# Run the bot
-CMD ["poetry", "run", "python", "main.py"]
+CMD ["/app/.venv/bin/python", "main.py"]

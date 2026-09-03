@@ -28,7 +28,7 @@ class AlphaBot:
         self.logger.info("Starting fusion operation")
 
         try:
-            balance = self.wsteth.balance_of(self.plasma_vault_address)
+            balance = self.wsteth.balance_of(self.plasma_vault_address).call()
             self.logger.info(f"Current wstETH balance to supply: {balance}")
 
             if balance == 0:
@@ -45,7 +45,7 @@ class AlphaBot:
             )
 
             self.logger.info("Executing transaction...")
-            tx_receipt = self.vault.execute([supply])
+            tx_receipt = self.vault.execute([supply]).send()
             tx_hash = tx_receipt.transactionHash.hex()
             self.logger.info(f"Transaction executed successfully hash: 0x{tx_hash}")
 
