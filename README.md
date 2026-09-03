@@ -79,6 +79,10 @@ The project includes Docker configuration for easy deployment:
    - An anvil instance for local blockchain simulation
    - The alpha bot container connected to the anvil service
 
+   The bot starts only after anvil reports healthy, which means the fork is up and the
+   sandbox alpha wallet has been granted `ALPHA_ROLE`. If anvil never becomes healthy
+   (`docker compose ps`), the role grant in `docker-entrypoint.sh` failed; check `docker compose logs anvil`.
+
 
 ### Customizing the Bot
 
