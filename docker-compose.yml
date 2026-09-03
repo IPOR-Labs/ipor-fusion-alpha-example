@@ -10,7 +10,10 @@ services:
     environment:
       - PROVIDER_URL=http://anvil:8545/
     depends_on:
-      - anvil
+      anvil:
+        # Start the bot only once the alpha wallet holds ALPHA_ROLE, otherwise
+        # its immediate first cycle reverts with AccessManagedUnauthorized
+        condition: service_healthy
 
   anvil:
     container_name: anvil
@@ -22,3 +25,17 @@ services:
       - .env
     ports:
       - "8545:8545"
+    healthcheck:
+      # Healthy when the entrypoint's grantRole has been mined: ALPHA_ROLE (200)
+      # for anvil account #0 on the vault's AccessManager
+      test:
+        - CMD-SHELL
+        - >-
+          cast call 0x3033C274D3Ccc8d12B4Ea567F6F94849507c37aE
+          'hasRole(uint64,address)(bool,uint32)'
+          200 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+          --rpc-url http://localhost:8545 | grep -q true
+      interval: 2s
+      timeout: 10s
+      retries: 60
+      start_period: 30s
