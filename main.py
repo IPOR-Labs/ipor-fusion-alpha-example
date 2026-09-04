@@ -16,7 +16,6 @@ logging.getLogger("schedule").setLevel(logging.INFO)
 logger = LoggingConfig.get_logger("main")
 
 if __name__ == "__main__":
-
     provider_url = os.getenv("PROVIDER_URL")
     private_key = os.getenv("PRIVATE_KEY")
     plasma_vault_address = os.getenv("PLASMA_VAULT_ADDRESS")
@@ -32,10 +31,12 @@ if __name__ == "__main__":
 
     if missing_vars:
         logger.error(
-            f"Error: The following required environment variables are missing: {', '.join(missing_vars)}"
+            "Error: The following required environment variables are missing: "
+            f"{', '.join(missing_vars)}"
         )
         logger.error(
-            "Please set these variables in your .env file or environment before running the application."
+            "Please set these variables in your .env file or environment "
+            "before running the application."
         )
         exit(1)
 

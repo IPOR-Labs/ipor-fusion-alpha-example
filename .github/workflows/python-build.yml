@@ -15,7 +15,7 @@ on:
       python-version:
         description: "Python version"
         type: string
-        default: 3.12
+        default: "3.11"
         required: false
       uv-version:
         description: "uv version"
@@ -70,6 +70,14 @@ jobs:
       - name: Install
         run: uv sync --locked
         id: install
+
+      - name: Format check
+        if: inputs.format-code-enabled
+        run: uv run ruff format --check .
+
+      - name: Lint
+        if: inputs.static-code-analysis-enabled
+        run: uv run ruff check .
 
       - name: Tests
         if: inputs.test-enabled
