@@ -4,11 +4,7 @@ on:
   workflow_call:
 
     secrets:
-      ARBITRUM_PROVIDER_URL:
-        required: true
       BASE_PROVIDER_URL:
-        required: true
-      ETHEREUM_PROVIDER_URL:
         required: true
 
     inputs:
@@ -34,11 +30,6 @@ on:
         required: false
       static-code-analysis-enabled:
         description: "Enable static code analysis"
-        type: boolean
-        default: true
-        required: false
-      build-enabled:
-        description: "Enable package build"
         type: boolean
         default: true
         required: false
