@@ -10,7 +10,7 @@ load_dotenv()
 
 @pytest.fixture(scope="session")
 def provider_url() -> str:
-    """Base RPC used both for reads and for eth_simulateV1 dry-runs (no anvil needed)."""
+    """Base RPC used for reads and for eth_simulateV1 dry-runs (no anvil needed)."""
     url = os.getenv("PROVIDER_URL")
     if not url:
         pytest.fail("PROVIDER_URL environment variable is required (Base archive RPC)")

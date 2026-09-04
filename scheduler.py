@@ -7,7 +7,6 @@ from logging_config import LoggingConfig
 
 
 class Scheduler:
-
     def __init__(self, fusion_alpha_bot: AlphaBot, interval: int):
         self.fusion_alpha_bot = fusion_alpha_bot
         self.interval = interval

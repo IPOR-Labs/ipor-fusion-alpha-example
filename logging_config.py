@@ -2,7 +2,6 @@ import logging
 
 
 class LoggingConfig:
-
     @staticmethod
     def get_logger(component_name: str):
         logger = logging.getLogger(f"Fusion Alpha - {component_name}")

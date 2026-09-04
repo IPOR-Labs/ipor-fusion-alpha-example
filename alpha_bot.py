@@ -1,4 +1,4 @@
-from ipor_fusion import Web3Context, PlasmaVault, ERC20, AaveV3SupplyFuse, FuseAction
+from ipor_fusion import ERC20, AaveV3SupplyFuse, FuseAction, PlasmaVault, Web3Context
 from web3 import Web3
 
 from logging_config import LoggingConfig
@@ -25,7 +25,7 @@ class AlphaBot:
         self.aave_v3_supply = AaveV3SupplyFuse(self.BASE_AAVE_V3_SUPPLY_FUSE)
 
     def build_actions(self) -> list[FuseAction]:
-        """Strategy step: the fuse actions to execute now, empty when there is nothing to do."""
+        """Strategy step: fuse actions to execute now, empty when nothing to do."""
         balance = self.wsteth.balance_of(self.plasma_vault_address).call()
         self.logger.info(f"Current wstETH balance to supply: {balance}")
 
@@ -34,7 +34,8 @@ class AlphaBot:
             return []
 
         self.logger.debug(
-            f"Creating supply action asset={self.WSTETH_ADDRESS} amount={balance} e_mode=1"
+            f"Creating supply action asset={self.WSTETH_ADDRESS} "
+            f"amount={balance} e_mode=1"
         )
         supply = self.aave_v3_supply.supply(
             asset=self.WSTETH_ADDRESS, amount=balance, e_mode=1
