@@ -12,7 +12,6 @@ jobs:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
   build:
-    needs: notify
     uses: ./.github/workflows/python-build.yml
     secrets:
       BASE_PROVIDER_URL: ${{ secrets.BASE_PROVIDER_URL }}
