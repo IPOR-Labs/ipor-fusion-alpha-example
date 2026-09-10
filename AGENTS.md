@@ -25,7 +25,9 @@ docker compose logs anvil                 # if the bot never starts, the role gr
 ```
 
 CI (`.github/workflows/python-build.yml`) runs `uv sync --locked`, `ruff format --check`, `ruff check`, then
-`pytest` with `PROVIDER_URL` injected from the `BASE_PROVIDER_URL` secret. Python is pinned to 3.11 in
+`pytest` with `PROVIDER_URL` injected from the `BASE_PROVIDER_URL` secret. It is called by `ci.yml` (PRs) and
+`cd.yml` (pushes to main/develop), which also run Slack notify/report jobs; those need `SLACK_BOT_TOKEN` and
+fail on fork PRs, where secrets are absent, but the build job runs independently of them. Python is pinned to 3.11 in
 `.python-version`, the Dockerfile, and the CI default. Keep `uv.lock` in sync with `pyproject.toml` or CI fails on
 `--locked`. Without a `PROVIDER_URL` ruff is the only check you can run; the test fails fast instead of skipping.
 
