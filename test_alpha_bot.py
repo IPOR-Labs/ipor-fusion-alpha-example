@@ -31,12 +31,12 @@ def test_alpha_bot(provider_url):
         plasma_vault_address=PLASMA_VAULT_ADDRESS,
     )
     # Pin the strategy's reads to the same block the simulation runs on
-    bot.ctx.default_block = PINNED_BLOCK
+    bot.ctx = bot.ctx.at_block(PINNED_BLOCK)
 
-    vault = PlasmaVault(bot.ctx, PLASMA_VAULT_ADDRESS)
-    access_manager = AccessManager(bot.ctx, vault.get_access_manager_address().call())
-    wsteth = ERC20(bot.ctx, AlphaBot.WSTETH_ADDRESS)
-    awsteth = ERC20(bot.ctx, BASE_AAVE_V3_A_WSTETH)
+    vault = PlasmaVault(PLASMA_VAULT_ADDRESS)
+    access_manager = AccessManager(vault.get_access_manager_address().call(bot.ctx))
+    wsteth = ERC20(AlphaBot.WSTETH_ADDRESS)
+    awsteth = ERC20(BASE_AAVE_V3_A_WSTETH)
 
     actions = bot.build_actions()
     assert actions, "vault holds no wstETH at the pinned block, nothing to simulate"
@@ -52,20 +52,28 @@ def test_alpha_bot(provider_url):
         call=access_manager.grant_role(Roles.ALPHA_ROLE, ALPHA_WALLET, Period(0)),
         from_=ATOMIST,
     )
-    sim.observe("wsteth_before", wsteth.balance_of(PLASMA_VAULT_ADDRESS))
-    sim.observe("awsteth_before", awsteth.balance_of(PLASMA_VAULT_ADDRESS))
+    wsteth_before = sim.observe(
+        wsteth.balance_of(PLASMA_VAULT_ADDRESS), label="wsteth_before"
+    )
+    awsteth_before = sim.observe(
+        awsteth.balance_of(PLASMA_VAULT_ADDRESS), label="awsteth_before"
+    )
     sim.execute(actions)
-    sim.observe("wsteth_after", wsteth.balance_of(PLASMA_VAULT_ADDRESS))
-    sim.observe("awsteth_after", awsteth.balance_of(PLASMA_VAULT_ADDRESS))
+    wsteth_after = sim.observe(
+        wsteth.balance_of(PLASMA_VAULT_ADDRESS), label="wsteth_after"
+    )
+    awsteth_after = sim.observe(
+        awsteth.balance_of(PLASMA_VAULT_ADDRESS), label="awsteth_after"
+    )
 
     result = sim.run()
 
     failed = [(call.label, call.error) for call in result.failed_calls]
     assert result.all_success, f"calls failed: {failed} (reason={result.revert_reason})"
 
-    supplied = result.get("wsteth_before")
+    supplied = wsteth_before.value
     assert supplied > 0
-    assert result.get("wsteth_after") == 0
-    minted = result.get("awsteth_after") - result.get("awsteth_before")
+    assert wsteth_after.value == 0
+    minted = awsteth_after.value - awsteth_before.value
     # aTokens rebase, so allow a few wei of rounding
     assert abs(minted - supplied) <= 10

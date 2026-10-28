@@ -20,13 +20,13 @@ class AlphaBot:
             url=provider_url,
             private_key=private_key,
         )
-        self.vault = PlasmaVault(self.ctx, self.plasma_vault_address)
-        self.wsteth = ERC20(self.ctx, self.WSTETH_ADDRESS)
+        self.vault = PlasmaVault(self.plasma_vault_address)
+        self.wsteth = ERC20(self.WSTETH_ADDRESS)
         self.aave_v3_supply = AaveV3SupplyFuse(self.BASE_AAVE_V3_SUPPLY_FUSE)
 
     def build_actions(self) -> list[FuseAction]:
         """Strategy step: fuse actions to execute now, empty when nothing to do."""
-        balance = self.wsteth.balance_of(self.plasma_vault_address).call()
+        balance = self.wsteth.balance_of(self.plasma_vault_address).call(self.ctx)
         self.logger.info(f"Current wstETH balance to supply: {balance}")
 
         if balance == 0:
@@ -51,7 +51,7 @@ class AlphaBot:
                 return None
 
             self.logger.info("Executing transaction...")
-            tx_receipt = self.vault.execute(actions).send()
+            tx_receipt = self.vault.execute(actions).send(self.ctx)
             tx_hash = tx_receipt.transactionHash.hex()
             self.logger.info(f"Transaction executed successfully hash: 0x{tx_hash}")
 

@@ -62,12 +62,12 @@ Strategy changes go in `AlphaBot.build_actions()`. Anything that produces `FuseA
 
 ### Test design (`test_alpha_bot.py`)
 
-No anvil, no signing. The test pins `bot.ctx.default_block` to `PINNED_BLOCK`, then uses the SDK's `VaultSimulator`
-to run one `eth_simulateV1` round-trip that: grants `ALPHA_ROLE` to the throwaway alpha wallet (impersonating the
-`ATOMIST` address, which is allowed because simulation runs with `validation=false`), observes balances, executes
-`build_actions()`, observes again. It asserts all wstETH left the vault and roughly the same amount of aWSTETH was
-minted (10 wei tolerance for aToken rebasing). Follow the same pattern for new strategies: pin the block, grant
-roles inside the simulation, assert on observed deltas.
+No anvil, no signing. The test pins `bot.ctx` to `PINNED_BLOCK` with `ctx.at_block`, then uses the SDK's
+`VaultSimulator` to run one `eth_simulateV1` round-trip that: grants `ALPHA_ROLE` to the throwaway alpha wallet
+(impersonating the `ATOMIST` address, which is allowed because simulation runs with `validation=false`), observes
+balances, executes `build_actions()`, observes again. It asserts all wstETH left the vault and roughly the same amount
+of aWSTETH was minted (10 wei tolerance for aToken rebasing). Follow the same pattern for new strategies: pin the
+block, grant roles inside the simulation, assert on observed deltas.
 
 ### Compose sandbox (`docker-compose.yml`, `Dockerfile.anvil`, `docker-entrypoint.sh`)
 
