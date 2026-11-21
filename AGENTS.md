@@ -38,6 +38,8 @@ fail on fork PRs, where secrets are absent, but the build job runs independently
 - Never print `.env` or `PRIVATE_KEY` into output, logs, or commit messages. Read single non-secret variables
   if you need them.
 - Dependencies are pinned with `==` in `pyproject.toml`; do the same for new ones and run `uv lock`.
+- Never commit a literal private key, not even in a test: this repo is public and sweeper bots harvest any key
+  they find. Tests use `Account.create()`. The only literal key allowed is anvil account #0 in `.env.example`.
 
 ## Environment
 

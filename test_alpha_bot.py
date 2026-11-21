@@ -10,9 +10,11 @@ from alpha_bot import AlphaBot
 logging.getLogger("web3").setLevel(logging.INFO)
 logging.getLogger("urllib3").setLevel(logging.INFO)
 
-# Any key works: eth_simulateV1 runs with validation=false, so nothing is signed.
-PRIVATE_KEY = "0xcd40c97ee4395e67dd780e5e98583abd315d7c4e4a8d3f95866c89c739e6fc40"
-ALPHA_WALLET = Web3.to_checksum_address(Account.from_key(PRIVATE_KEY).address)
+# Fresh throwaway key per run: eth_simulateV1 runs with validation=false, so nothing
+# is signed. Never commit a literal key here, this repo is public.
+ALPHA_ACCOUNT = Account.create()
+PRIVATE_KEY = ALPHA_ACCOUNT.key.to_0x_hex()
+ALPHA_WALLET = ALPHA_ACCOUNT.address
 ATOMIST = Web3.to_checksum_address("0xF6a9bd8F6DC537675D499Ac1CA14f2c55d8b5569")
 PLASMA_VAULT_ADDRESS = Web3.to_checksum_address(
     "0xFe8b23B493579e5c3a0A3BC5BBF20662B3072DE6"
