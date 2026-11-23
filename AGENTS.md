@@ -34,6 +34,9 @@ fail on fork PRs, where secrets are absent, but the build job runs independently
 ## Conventions
 
 - Commit subjects carry a bracketed prefix: `[fix]`, `[chore]`. Keep that style.
+- This repository is public: no issue-tracker keys, internal hosts or private repository names in commits, branch
+  names, PR text or code. `.github/workflows/leak-check.yml` fails a PR that has them; check locally with
+  `git log --format=%B origin/main.. | scripts/leak-check.sh` (patterns from `~/.config/ipor/leak-patterns`).
 - No AI attribution anywhere: no `Co-Authored-By`, no "Generated with", no tool trailers in commits or PRs.
 - Never print `.env` or `PRIVATE_KEY` into output, logs, or commit messages. Read single non-secret variables
   if you need them.
